@@ -1,20 +1,33 @@
-import React from 'react';
-import { StyleSheet, Button, TextInput, View, FlatList, Text } from 'react-native';
-import films from "../helpers/filmsData";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Button, TextInput, View, FlatList } from 'react-native';
 import FilmItem from './FilmItem';
+import { getFilmsFromApiWithSearchedText } from '../api/TMDBApi';
 
 const Search = () => {
-  return (
-    <View style={styles.main_container}>
-        <TextInput style={styles.textinput} placeholder='Titre du film'/>
-        <Button style={styles.button} title='Rechercher' onPress={() => {}}/>
-        <FlatList 
-            data={films}
-            keyExtractor={(item) => item.id.toString()} 
-            renderItem={({item}) => <FilmItem film={item}/>}
-        />
-    </View>
-  );
+    const [query, setQuery] = useState('');
+    const [films, setFilms] = useState([]);
+
+    const loadFilms = () => {
+      getFilmsFromApiWithSearchedText(query).then((data) => {setFilms(data.results), console.log(data.results)});
+    };
+
+    useEffect(() => {
+      if(!query) {
+        loadFilms();
+      }
+    }, [query]);
+
+    return (
+        <View style={styles.main_container}>
+            <TextInput style={styles.textinput} placeholder='Titre du film' value={query} onChangeText={(value) => setQuery(value)}/>
+            <Button style={styles.button} title='Rechercher' onPress={() => loadFilms()}/>
+            <FlatList 
+                data={films}
+                keyExtractor={(item) => item.id.toString()} 
+                renderItem={({item}) => <FilmItem film={item}/>}
+            />
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({

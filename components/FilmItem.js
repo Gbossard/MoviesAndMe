@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 
 const FilmItem = ({film}) => {
 
+    console.log(film)
+    
   return (
     <View style={styles.main_container}>
         <Image style={styles.image}/>
