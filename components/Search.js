@@ -19,7 +19,7 @@ const Search = () => {
 
     return (
         <View style={styles.main_container}>
-            <TextInput style={styles.textinput} placeholder='Titre du film' value={query} onChangeText={(value) => setQuery(value)}/>
+            <TextInput style={styles.textinput} onSubmitEditing={loadFilms} placeholder='Titre du film' value={query} onChangeText={(value) => setQuery(value)}/>
             <Button style={styles.button} title='Rechercher' onPress={() => loadFilms()}/>
             <FlatList 
                 data={films}
